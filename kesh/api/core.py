@@ -6,19 +6,24 @@ class Connection(object):
     def __init__(self, **kwargs):
         self._options = kwargs
 
-    def _connect(self):
+        self._client = None
+
+    def connect(self):
         """Connect to the mongodb db with pymongo.MongoClient.
         :return: None
         """
 
         self._client = MongoClient(**self._options)
 
-    def _disconnect(self):
+    def disconnect(self):
         """Disconnect from MongoClient.
         :return: None
         """
 
-        self._client.close()
+        if self._client is None:
+            raise Exception('Cannot disconnect as no connection has successfully been made yet.')
+        else:
+            self._client.close()
 
     def __enter__(self):
         """For use with the "with" statement. Will create an open db connection.
@@ -26,7 +31,7 @@ class Connection(object):
         :return:
         """
 
-        self._connect()
+        self.connect()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -37,10 +42,9 @@ class Connection(object):
         :return:
         """
 
-        self._disconnect()
+        self.disconnect()
 
 
 if __name__ == '__main__':
 
-    with Connection() as connection:
-        print(connection)
+    connection = Connection()
