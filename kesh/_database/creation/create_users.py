@@ -6,7 +6,7 @@ from time import gmtime, strftime
 import os
 import re
 
-data_dir = '../../so_data'
+data_dir = '../../../bin/so_data_/'
 file_name = 'Users.xml'
 db_name = 'kesh'
 coll_name = 'users'
