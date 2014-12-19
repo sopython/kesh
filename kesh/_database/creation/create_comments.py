@@ -44,7 +44,7 @@ for event, elem in context:
     if event == 'end' and elem.tag == 'row':
         # Create a dictionary and convert any necessary fields.
         d = dict(elem.items())
-        if int(d['post_id']) in ids:
+        if int(d['PostId']) in ids:
             d = {convert(k):int(v) if k in str_to_int else
                  parse(v) if k in str_to_date else
                  v for k, v in d.items()}
