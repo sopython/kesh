@@ -45,23 +45,23 @@ for event, elem in context:
     if event == 'end' and elem.tag == 'row':
         # Create a dictionary and convert any necessary fields.
         d = dict(elem.items())
-        if int(d['PostTypeId']) == 2 and int(d['ParentId']) in question_ids:
+        if int(d['post_type_id']) == 2 and int(d['parent_id']) in question_ids:
             d = {convert(k):int(v) if k in str_to_int else
                  parse(v) if k in str_to_date else
                  v for k, v in d.items()}
             coll.insert(d)
-            answer_ids.add(d['Id'])
+            answer_ids.add(d['id'])
             elem.clear()
             while elem.getprevious() is not None:
                 del elem.getparent()[0]
             i += 1
             if i % 1000 == 0:
-                s_option = (strftime('%H:%M:%S', gmtime()), d['Id'])
+                s_option = (strftime('%H:%M:%S', gmtime()), d['id'])
                 s = '{:s} : Id - {:d}\n'.format(*s_option)
                 print(s, end='')
                 f.write(s)
 
-coll.ensure_index(convert('Id'))
+coll.ensure_index(convert('id'))
 
 f.close()
 

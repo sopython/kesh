@@ -40,12 +40,12 @@ for i, (event, elem) in enumerate(context):
         while elem.getprevious() is not None:
             del elem.getparent()[0]
         if i % 50000 == 0:
-            s_option = (strftime('%H:%M:%S', gmtime()), d['Id'])
+            s_option = (strftime('%H:%M:%S', gmtime()), d['id'])
             s = '{:s} : Id - {:d}\n'.format(*s_option)
             print(s, end='')
             f.write(s)
             
-coll.ensure_index(convert('Id'))
+coll.ensure_index(convert('id'))
 
 f.close()
 
