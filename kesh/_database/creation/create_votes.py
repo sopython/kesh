@@ -7,7 +7,7 @@ from time import gmtime, strftime
 import os
 import re
 
-data_dir = '../../so_data'
+data_dir = '../../../bin/so_data_/'
 file_name = 'Votes.xml'
 db_name = 'kesh'
 coll_name = 'votes'
@@ -53,13 +53,13 @@ for event, elem in context:
                 del elem.getparent()[0]
             i += 1
             if i % 50000 == 0:
-                s_option = (strftime('%H:%M:%S', gmtime()), d['Id'], i)
+                s_option = (strftime('%H:%M:%S', gmtime()), d['id'], i)
                 s = '{:s} : Id - {:d} : # - {:d}\n'.format(*s_option)
                 print(s, end='')
                 f.write(s)
 
 print('Creating indices.')
 
-coll.ensure_index(convert('Id'))
+coll.ensure_index('id')
 
 f.close()
