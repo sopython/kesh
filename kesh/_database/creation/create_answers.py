@@ -4,12 +4,12 @@ from dateutil.parser import parse
 
 import pickle
 from time import gmtime, strftime
-import os.path
 import os
+import re
 
-data_dir = '../../so_data'
+data_dir = '../../../bin/so_data_/'
 file_name = 'Posts.xml'
-db_name = 'nidaba'
+db_name = 'kesh'
 coll_name = 'answers'
 
 # Load in a set of python question ids.
@@ -29,7 +29,11 @@ str_to_int = {'Id', 'PostTypeId', 'ParentId', 'Score', 'ViewCount',
 str_to_date = {'CreationDate', 'LastActivityDate', 'LastEditDate',
                'CommunityOwnedDate', 'ClosedDate'}
 
-f = open('./logs/{:s}.log'.format(coll_name), 'w')
+def convert(name):
+   s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+   return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
+f = open(os.path.join(data_dir, './logs/{:s}.log'.format(coll_name)), 'w')
 s = 'Importing {:s} data.\n\n'.format(coll_name)
 f.write(s)
 print(s, end='')
@@ -42,7 +46,7 @@ for event, elem in context:
         # Create a dictionary and convert any necessary fields.
         d = dict(elem.items())
         if int(d['PostTypeId']) == 2 and int(d['ParentId']) in question_ids:
-            d = {k:int(v) if k in str_to_int else
+            d = {convert(k):int(v) if k in str_to_int else
                  parse(v) if k in str_to_date else
                  v for k, v in d.items()}
             coll.insert(d)
@@ -57,7 +61,7 @@ for event, elem in context:
                 print(s, end='')
                 f.write(s)
 
-coll.ensure_index('Id')
+coll.ensure_index(convert('Id'))
 
 f.close()
 

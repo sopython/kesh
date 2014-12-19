@@ -1,14 +1,13 @@
 from pymongo import MongoClient
 from lxml import etree
-from dateutil.parser import parse
 
 from time import gmtime, strftime
-import os.path
 import os
+import re
 
-data_dir = '../../so_data'
+data_dir = '../../../bin/so_data_/'
 file_name = 'Tags.xml'
-db_name = 'nidaba'
+db_name = 'kesh'
 coll_name = 'tags'
 
 client = MongoClient()
@@ -20,13 +19,17 @@ context = etree.iterparse(os.path.join(data_dir, file_name),
 
 str_to_int = {'Id', 'Count', 'ExcerptPostId', 'WikiPostId'}
 
-f = open('./logs/{:s}.log'.format(coll_name), 'w')
+def convert(name):
+   s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+   return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
+f = open(os.path.join(data_dir, './logs/{:s}.log'.format(coll_name)), 'w')
 f.write('Importing {:s} data.\n\n'.format(coll_name))
 
 for i, (event, elem) in enumerate(context):
     if event == 'end' and elem.tag == 'row':
         # Create a dictionary and convert any necessary fields.
-        d = {k:int(v) if k in str_to_int else
+        d = {convert(k):int(v) if k in str_to_int else
              v for k, v in elem.items()}
         coll.insert(d)
         elem.clear()
@@ -38,6 +41,6 @@ for i, (event, elem) in enumerate(context):
             print(s, end='')
             f.write(s)
 
-coll.ensure_index('Id')
+coll.ensure_index(convert('Id'))
 
 f.close()
