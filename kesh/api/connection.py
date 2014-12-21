@@ -27,8 +27,13 @@ class MongoConnection(Connection):
 
         if 'id' in d:
             return coll.find_one(d)
-        elif 'ids' in d.keys():
+
+        if 'ids' in d.keys():
             return list(coll.find({'id':{'$in':d['ids']}}))
+
+        if 'all' in d and d['all']:
+            return coll.find()
+
 
     def __enter__(self):
         """For use with the "with" statement. Will create an open db connection.
