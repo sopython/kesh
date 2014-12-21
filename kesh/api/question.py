@@ -12,3 +12,10 @@ class Question(Post):
         result = self.db.query(d)
 
         return result
+
+    def get_question_by_ids(self, ids):
+        d = {'collection':'questions', 'ids':ids}
+
+        result = self.db.query(d)
+
+        return result
