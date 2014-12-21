@@ -1,1 +1,1 @@
-from .core import Connection
+from .connection import MongoConnection
