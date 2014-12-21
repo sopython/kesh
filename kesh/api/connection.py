@@ -10,28 +10,22 @@ class Connection(object):
 class MongoConnection(Connection):
     """Connection object for connecting to the mongodb database and retrieving data."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, db, mongo_options={}):
         super().__init__()
-        self._options = kwargs
 
-        self._client = None
+        self.client = MongoClient(**mongo_options)
+        self.db = self.client[db]
 
-    def connect(self):
-        """Connect to the mongodb db with pymongo.MongoClient.
-        :return: None
-        """
 
-        self._client = MongoClient(**self._options)
+    def query(self, d):
 
-    def disconnect(self):
-        """Disconnect from MongoClient.
-        :return: None
-        """
+        coll_name = d.pop('collection', None)
+        if coll_name is None:
+            raise Exception('Collection param not found in query.')
 
-        if self._client is None:
-            raise Exception('Cannot disconnect as no connection has successfully been made yet.')
-        else:
-            self._client.close()
+        coll = self.db[coll_name]
+
+        return coll.find_one(d)
 
     def __enter__(self):
         """For use with the "with" statement. Will create an open db connection.
@@ -39,8 +33,7 @@ class MongoConnection(Connection):
         :return: Client connection.
         """
 
-        self.connect()
-        return self._client
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """For use with the "with" statement. Will disconnect from db connection.
@@ -50,7 +43,7 @@ class MongoConnection(Connection):
         :return:
         """
 
-        self.disconnect()
+        self.client.close()
 
 
 if __name__ == '__main__':
