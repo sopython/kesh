@@ -1,9 +1,17 @@
 from pymongo import MongoClient
 
+
 class Connection(object):
+
+    def __init__(self):
+        super().__init__()
+
+
+class MongoConnection(Connection):
     """Connection object for connecting to the mongodb database and retrieving data."""
 
     def __init__(self, **kwargs):
+        super().__init__()
         self._options = kwargs
 
         self._client = None
@@ -28,11 +36,11 @@ class Connection(object):
     def __enter__(self):
         """For use with the "with" statement. Will create an open db connection.
 
-        :return:
+        :return: Client connection.
         """
 
         self.connect()
-        return self
+        return self._client
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """For use with the "with" statement. Will disconnect from db connection.
@@ -47,4 +55,5 @@ class Connection(object):
 
 if __name__ == '__main__':
 
-    connection = Connection()
+    with MongoConnection() as conn:
+        print(conn)
