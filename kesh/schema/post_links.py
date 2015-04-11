@@ -1,5 +1,6 @@
 from kesh.schema.base import fields, KeshSchema, convert
 
+
 post_link_type_id = {1: 'Linked',
                      3: 'Duplicate'}
 
@@ -21,6 +22,7 @@ def add_post_link_string(schema, input_data):
     except KeyError:
         pass
     return input_data
+
 
 if __name__ == '__main__':
     s = r'''{"RelatedPostId" : "102",

@@ -1,5 +1,6 @@
 from kesh.schema.base import fields, KeshSchema, convert
 
+
 user_schema_fields = {'Id': (fields.Integer, {'required':True}),
                       'Reputation': (fields.Integer, {}),
                       'CreationDate': (fields.DateTime, {}),
@@ -20,6 +21,7 @@ mixin = type('mixin', (), {name:func(attribute=convert(name), **args)
 
 class UserSchema(KeshSchema, mixin):
     pass
+
 
 if __name__ == '__main__':
     s = r'''{"AccountId" : "-1",

@@ -22,6 +22,7 @@ mixin = type('mixin', (), {name:func(attribute=convert(name), **args)
 class PostSchema(KeshSchema, mixin):
     pass
 
+
 question_schema_fields = {'Title': (fields.String, {'required':True}),
                           'Tags': (fields.String, {'required':True}),
                           'AnswerCount': (fields.Integer, {'required':True}),
@@ -34,7 +35,6 @@ mixin = type('mixin', (), {name:func(attribute=convert(name), **args)
 
 class QuestionSchema(PostSchema, mixin):
     pass
-
 @QuestionSchema.preprocessor
 def convert_tag_string_to_list(schema, input_data):
     input_data['tags'] = [i.strip('<') for i in input_data['tags'].split('>')[:-1]]
@@ -47,6 +47,7 @@ mixin = type('mixin', (), {name:func(attribute=convert(name), **args)
 
 class AnswerSchema(PostSchema, mixin):
     pass
+
 
 if __name__ == '__main__':
     s = '''{"Id":"12345", "PostTypeId":"1", "CreationDate":"2012-04-21T18:25:43","Score":"10", "ViewCount":"120",

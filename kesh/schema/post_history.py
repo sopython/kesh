@@ -1,5 +1,6 @@
 from kesh.schema.base import fields, KeshSchema, convert
 
+
 post_history_type_id = {1: 'initial_title',
                         2: 'initial_body',
                         3: 'initial_tags',

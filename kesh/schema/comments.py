@@ -1,5 +1,6 @@
 from kesh.schema.base import fields, KeshSchema, convert
 
+
 comment_schema_fields = {'Id': (fields.Integer, {'required':True}),
                         'PostId': (fields.Integer, {'required':True}),
                         'CreationDate': (fields.DateTime, {}),
