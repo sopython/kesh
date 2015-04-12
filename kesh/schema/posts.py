@@ -53,9 +53,12 @@ if __name__ == '__main__':
     s = '''{"Id":"12345", "PostTypeId":"1", "CreationDate":"2012-04-21T18:25:43","Score":"10", "ViewCount":"120",
     "Body":"Hello! My name is Keiron!", "Title":"Question!", "Tags":"<python><pandas><numpy>", "AnswerCount":"0",
     "CommentCount":"20", "FavoriteCount":"12000"}'''
+    d = {"Id":"12345", "PostTypeId":"1", "CreationDate":"2012-04-21T18:25:43","Score":"10", "ViewCount":"120",
+    "Body":"Hello! My name is Keiron!", "Title":"Question!", "Tags":"<python><pandas><numpy>", "AnswerCount":"0",
+    "CommentCount":"20", "FavoriteCount":"12000"}
 
     schema = QuestionSchema()
 
-    data, errors = schema.loads(s)
+    data, errors = schema.load(d)
 
     print(data, errors, sep='\n\n\n')
