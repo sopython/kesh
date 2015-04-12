@@ -59,6 +59,6 @@ if __name__ == '__main__':
 
     schema = QuestionSchema()
 
-    data, errors = schema.load(d)
+    data, errors = schema.load(dict(d.items()))
 
     print(data, errors, sep='\n\n\n')
