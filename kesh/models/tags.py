@@ -3,7 +3,8 @@ from kesh.models.base import ForeignKey
 
 class Tag(Base):
     __tablename__ = 'tags'
-    post_id = Column(Integer, ForeignKey('questions.id'), primary_key=True)
+
+    post_id = Column(Integer, ForeignKey('posts.id'), primary_key=True)
     tag = Column(String, primary_key=True)
 
     def __repr__(self):
